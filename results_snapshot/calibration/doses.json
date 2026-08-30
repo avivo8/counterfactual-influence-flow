@@ -1,0 +1,76 @@
+{
+  "cap_gate": 1.5,
+  "base_ppl": 6.399706840515137,
+  "doses": [
+    {
+      "alpha": 0.0,
+      "B_LL": -0.4231363108256079,
+      "indomain_pref": -0.6188386869616807,
+      "capability_ppl": 6.399706840515137,
+      "cap_ratio": 1.0,
+      "passes_gate": true,
+      "is_extrapolation": false,
+      "seconds": 94.39534616470337
+    },
+    {
+      "alpha": 0.25,
+      "B_LL": -0.3844940718605043,
+      "indomain_pref": -0.5196854204405099,
+      "capability_ppl": 6.411291122436523,
+      "cap_ratio": 1.0018101269651993,
+      "passes_gate": true,
+      "is_extrapolation": false,
+      "seconds": 104.04493498802185
+    },
+    {
+      "alpha": 0.5,
+      "B_LL": -0.3457634389906792,
+      "indomain_pref": -0.4164782431907952,
+      "capability_ppl": 6.533430576324463,
+      "cap_ratio": 1.020895290853442,
+      "passes_gate": true,
+      "is_extrapolation": false,
+      "seconds": 112.59333086013794
+    },
+    {
+      "alpha": 0.75,
+      "B_LL": -0.3090785738393582,
+      "indomain_pref": -0.3099199447315186,
+      "capability_ppl": 6.806727886199951,
+      "cap_ratio": 1.0635999516584187,
+      "passes_gate": true,
+      "is_extrapolation": false,
+      "seconds": 181.83369708061218
+    },
+    {
+      "alpha": 1.0,
+      "B_LL": -0.27909071302669153,
+      "indomain_pref": -0.2022020996082574,
+      "capability_ppl": 7.356042861938477,
+      "cap_ratio": 1.1494343483624885,
+      "passes_gate": true,
+      "is_extrapolation": false,
+      "seconds": 227.24560809135437
+    },
+    {
+      "alpha": 1.25,
+      "B_LL": -0.2598140067487793,
+      "indomain_pref": -0.09629903733730316,
+      "capability_ppl": 8.365748405456543,
+      "cap_ratio": 1.3072080665468657,
+      "passes_gate": true,
+      "is_extrapolation": true,
+      "seconds": 389.7421979904175
+    },
+    {
+      "alpha": 1.5,
+      "B_LL": -0.2482641215725332,
+      "indomain_pref": 0.0027150202076882124,
+      "capability_ppl": 9.886987686157227,
+      "cap_ratio": 1.5449125924901561,
+      "passes_gate": false,
+      "is_extrapolation": true,
+      "seconds": 427.2180600166321
+    }
+  ]
+}
