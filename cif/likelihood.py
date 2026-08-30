@@ -28,7 +28,7 @@ import torch
 
 from cif import data as D, model as M, paths
 
-RESP = paths.REPO_ROOT / "em_organism_dir/lora_interp/response_data"
+RESP = paths.RESPONSE_DATA
 KL_DATA = paths.DATA_EXTRACTED / "misalignment_kl_data.jsonl"
 
 
