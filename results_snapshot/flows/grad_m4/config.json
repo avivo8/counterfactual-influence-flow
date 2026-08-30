@@ -1,0 +1,36 @@
+{
+  "flow": {
+    "mode": "grad",
+    "m": 4,
+    "eta": 0.00890953540802002,
+    "damping": 1.0,
+    "T": 24,
+    "cg_tol": 0.0,
+    "cg_max_iter": 12,
+    "curv_examples": 12,
+    "curv_batch": 2,
+    "cf_batch": 2,
+    "max_len": 192,
+    "normalize_step": true,
+    "seed": 0,
+    "benign": false,
+    "shuffle_cf": false
+  },
+  "lora": {
+    "r": 1,
+    "lora_alpha": 512,
+    "use_rslora": true,
+    "target_modules": [
+      "down_proj"
+    ],
+    "layers_to_transform": null
+  },
+  "init_ckpt": "/Users/bybswln/Documents/Neel_Nanda/cif_runs/checkpoints/theta_S_r1_down_proj_Lall/step00311",
+  "n_cf": 4,
+  "cf_source_rows": [
+    3976,
+    5483,
+    3918,
+    3596
+  ]
+}

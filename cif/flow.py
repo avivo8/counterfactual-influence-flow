@@ -188,7 +188,9 @@ if __name__ == "__main__":
     ap.add_argument("--mode", default="ggn",
                     choices=["ggn", "grad", "random", "oneshot", "fisher", "ihvp"])
     ap.add_argument("--m", type=int, default=4)
-    ap.add_argument("--eta", type=float, default=None)
+    ap.add_argument("--eta", type=float, required=True,
+                    help="step size; run_campaign derives it from the measured "
+                         "oracle displacement ||theta_I - theta_S||/20")
     ap.add_argument("--damping", type=float, default=1.0)
     ap.add_argument("--T", type=int, default=24)
     ap.add_argument("--curv-examples", type=int, default=32)

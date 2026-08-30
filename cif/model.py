@@ -31,7 +31,11 @@ class LoraSpec:
     lora_alpha: int = 512          # matches upstream single_adapter_config
     use_rslora: bool = True
     target_modules: List[str] = field(default_factory=lambda: ["down_proj"])
-    layers_to_transform: Optional[List[int]] = field(default_factory=lambda: [12])
+    # None = all layers. This is what every driver constructs; a single-layer
+    # default was a footgun because tag() names the checkpoint directory, so a
+    # CLI run without --layers all silently wrote theta_S_r1_down_proj_L12/ that
+    # nothing downstream could find.
+    layers_to_transform: Optional[List[int]] = None
 
     def tag(self):
         L = "all" if self.layers_to_transform is None else \

@@ -654,21 +654,33 @@ walk over saved checkpoints, the capability veto) rather than its grid.
 | `blind.py` | blinded worksheet, unblinding, `P_EM`, bootstrap CI, `R_B` |
 | `repr_analysis.py` | misalignment direction, layerwise projections, trajectory cosines |
 
-### Known code-level caveats
+### Code-level issues found by adversarial review, and their disposition
 
-Read before trusting any artifact. `CIF_SETUP.md` §8 documents items 2, 5 and the `LoraSpec`
-footgun (7) as well; the rest are additional.
+The implementation was put through a four-lens adversarial review (mathematical
+correctness, experimental leakage, control validity, runtime plumbing), with every
+claimed defect handed to a separate agent instructed to refute it. Findings that
+survived refutation are listed with what was done about them.
 
-| # | file | issue |
+**Fixed — these were real and would have affected results:**
+
+| # | file | issue and fix |
 |---|---|---|
-| 1 | `likelihood.py` `evaluate_checkpoint` | **Key collision.** `capability_ppl` returns `"n"` and is merged *after* `indomain_cf_preference`, which also returns `"n"`. The `n` recorded in `gate_check.json` (200) is the **capability** sample count, not the 256 in-domain pairs. Metric *values* are unaffected, but the provenance field is wrong — and it propagates into every row of `trajectory_metrics.jsonl`, where `eval_all.py` varies `tuning_n` between 128 (curve) and 256 (endpoint). The recorded `n` cannot distinguish those; only the `full_probe` flag can. |
-| 2 | `flow.py` `__main__` | `--eta` defaults to `None`, and `run()` formats `f"eta{cfg.eta:g}"` — the CLI **crashes** unless `--eta` is passed. `run_campaign.py` always passes it, so only the standalone path is affected. |
-| 3 | `flow.py` `random` mode | `seed=cfg.seed + t` re-draws the direction every step, and `normalize_step=True` then discards the matched norm. So `random_m4` is an isotropic **random walk** with per-step length `eta`: expected displacement ~`sqrt(24)*eta ≈ 4.9*eta` vs up to `24*eta` for a coherent arm. It is not distance-matched, and the "matched norm to `delta_g`" property is vacuous. A fixed random direction would be the distance-matched control. |
-| 4 | `run_campaign.py` docstring (and `CIF_SETUP.md` §6, which repeats it) | Claims `T` steps overshoot the oracle displacement "~1.5x"; `eta = disp/20`, `T = 24` gives **1.2×** as an upper bound, and strictly less under field rotation. Relevant to limitation 13 — the post-hoc calibrated stopping point is only guaranteed to exist if the flow can actually travel that far. |
-| 5 | `influence.py` `GGNCurvature.hvp` | Docstring says batches are "summed not averaged"; the code divides by `len(self.batches)`. The **code is correct** (it matches `per_example_loss`'s mean-over-examples), the docstring is not. Separately, neither `Curvature` nor `GGNCurvature` enforces `n_examples % batch_size == 0`, so an uneven final batch would make mean-of-means ≠ overall mean — the exact failure `validate_if.py` explicitly guards against. Current settings (12 / 2) are safe. |
-| 6 | `blind.py` `report` | Sort key `-(r['R_B'] or -9)` treats `R_B == 0.0` as missing. Display ordering only. |
-| 7 | `model.py` `LoraSpec` | Defaults to `layers_to_transform=[12]` (one layer), while every driver constructs it with `layers_to_transform=None` (all 24). Since `tag()` names the checkpoint directory, running `train.py`'s CLI without `--layers all` silently writes `theta_S_r1_down_proj_L12/` and nothing downstream finds it. |
-| 8 | `influence.py` `influence_field` docstring | The documented `mode:` list omits `ggn` — the mode the campaign actually runs. |
+| 1 | `eval_all.py` | **Would have corrupted the headline `R_B`.** Non-endpoint checkpoints were scored with `max_per_class=120`, a positional *head-slice* of a parquet that is ordered and grouped by question. That slice contains **0%** of the template-format responses, which are 18.8% of the misaligned class and 43.2% of the aligned class (total-variation distance of the question mix vs the full set: 0.24 and 0.43). So `B_LL@120` was a different quantity, not a noisy estimate of `B_LL@full` — and it was being differenced against a full-set baseline from `gate_check.json`. With `delta_B_true` only 0.144, the fixed offset could move `R_B` by tens of percent or flip its sign. **Fix:** every checkpoint is now scored on the identical full probe (`eval_fast.py`); subsampling *checkpoints* is fine, subsampling the *probe* is not. |
+| 2 | `flow.py` `random` mode | `seed=cfg.seed + t` re-drew the direction every step and `normalize_step=True` then discarded the matched norm, making `random_m4` an isotropic random **walk** (displacement ~`sqrt(T)*eta`) rather than the spec's matched-norm random direction. Confirmed in the campaign log: `cos(v_t,v_0) ~ 0.000` at every step. **Fix:** one fixed direction, reused; displacement is now exactly `T*eta`, matching `oneshot`. |
+| 3 | `flow.py` benign control | With `y^CF := y^S`, `delta_g_CF` is the difference of two backward passes over *identical* batches — pure float noise. `normalize_step=True` renormalised that noise into a full-size step, silently converting the null control into a second random-direction arm with displacement identical to the main arm. **Fix:** an externally supplied `ref_field_norm` plus a null-field gate; the benign arm runs unnormalised. It now measures `||delta_g||= 0.000e+00` and `disp = 0.00000` over 8/8 null steps — an exact null, not merely a small one. |
+| 4 | `likelihood.py` | `indomain_cf_preference` and `capability_ppl` both returned `"n"`, the latter silently overwriting the former. Metric values were unaffected; the provenance field was wrong. **Fix:** `n_indomain` / `n_capability`. |
+| 5 | `model.py` `LoraSpec` | Defaulted to `layers_to_transform=[12]` while every driver passes `None` (all layers). Since `tag()` names the checkpoint directory, a CLI run without `--layers all` silently wrote `theta_S_r1_down_proj_L12/` that nothing downstream could find. **Fix:** default is now `None`. |
+| 6 | `influence.py` `GGNCurvature` | Docstring said batches were "summed not averaged" while the code averaged (the code was right). Neither curvature class enforced `n_examples % batch_size == 0`, which would break mean-of-means. **Fix:** docstring corrected, divisibility asserted. |
+| 7 | `flow.py` `__main__` | `--eta` defaulted to `None` and crashed only after loading tokenizer, splits, model and curvature. **Fix:** now `required=True`. |
+| 8 | `blind.py` `report` | Sort key `-(r['R_B'] or -9)` treated `R_B == 0.0` as missing. Display only. **Fix:** explicit `is None` test. |
+
+**Known and accepted, not fixed:**
+
+| file | issue |
+|---|---|
+| `tune.py` | Stale relative to the final method: it sweeps `mode="ihvp"` with `lambda` in {1e-3, 1e-2, 1e-1}, a regime the curvature measurements (§4) showed cannot work. It was superseded by the matched-path-length protocol and is **not** on the path that produced any reported result. Retained only because the in-domain-only calibration logic in it documents the preregistration intent. |
+| `run_campaign.py` docstring | Claimed `T` steps overshoot the oracle displacement "~1.5x". With `eta = disp/20, T = 24` the upper bound is **1.2x**, and strictly less once the field rotates. This is exactly why the calibrated stopping point turned out not to exist — see §7. |
+| `validate_if.py` | Written and memory-corrected but **not run**: the machine could not afford it alongside the campaign. The one-step-IF-vs-real-retraining validation is therefore an open item, not a completed check. |
 
 ---
 

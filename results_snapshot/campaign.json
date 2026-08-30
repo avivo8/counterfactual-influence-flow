@@ -1,0 +1,49 @@
+{
+  "eta": 0.00890953540802002,
+  "T": 24,
+  "oracle_disp": 0.1781907081604004,
+  "results": {
+    "ggn_m4": {
+      "dir": "/Users/bybswln/Documents/Neel_Nanda/cif_runs/flows/ggn_m4",
+      "minutes": 42.756173646450044,
+      "final_disp": 0.07455914467573166,
+      "cos_v_v0_final": 0.023247186094522476,
+      "steps": 24
+    },
+    "grad_m4": {
+      "dir": "/Users/bybswln/Documents/Neel_Nanda/cif_runs/flows/grad_m4",
+      "minutes": 1.36681919892629,
+      "final_disp": 0.05865677446126938,
+      "cos_v_v0_final": -0.06941142678260803,
+      "steps": 24
+    },
+    "random_m4": {
+      "dir": "/Users/bybswln/Documents/Neel_Nanda/cif_runs/flows/random_m4",
+      "minutes": 1.0860461354255677,
+      "final_disp": 0.04367878660559654,
+      "cos_v_v0_final": 0.0008076587109826505,
+      "steps": 24
+    },
+    "oneshot_m4": {
+      "dir": "/Users/bybswln/Documents/Neel_Nanda/cif_runs/flows/oneshot_m4",
+      "minutes": 4.405973970890045,
+      "final_disp": 0.21382887661457062,
+      "cos_v_v0_final": 1.0000001192092896,
+      "steps": 24
+    },
+    "ggn_m1": {
+      "dir": "/Users/bybswln/Documents/Neel_Nanda/cif_runs/flows/ggn_m1",
+      "minutes": 50.04798254966736,
+      "final_disp": 0.06830915063619614,
+      "cos_v_v0_final": 0.0686565488576889,
+      "steps": 24
+    },
+    "ggn_m16": {
+      "dir": "/Users/bybswln/Documents/Neel_Nanda/cif_runs/flows/ggn_m16",
+      "minutes": 24.25070163408915,
+      "final_disp": 0.08329012989997864,
+      "cos_v_v0_final": 0.01974782906472683,
+      "steps": 24
+    }
+  }
+}

@@ -1,0 +1,196 @@
+[
+  {
+    "t": 1,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.008909535594284534,
+    "elapsed_min": 0.019933768113454185,
+    "dg_norm": 83.73637390136719,
+    "seconds": 1.1928880214691162
+  },
+  {
+    "t": 2,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.01781907118856907,
+    "elapsed_min": 0.020136487483978272
+  },
+  {
+    "t": 3,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.02672860585153103,
+    "elapsed_min": 0.020331851641337075
+  },
+  {
+    "t": 4,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.03563814237713814,
+    "elapsed_min": 0.020664433638254803
+  },
+  {
+    "t": 5,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.0445476770401001,
+    "elapsed_min": 0.020861085255940756
+  },
+  {
+    "t": 6,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.05345721170306206,
+    "elapsed_min": 0.0210573673248291
+  },
+  {
+    "t": 7,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.06236674636602402,
+    "elapsed_min": 0.021253681182861327
+  },
+  {
+    "t": 8,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.07127628475427628,
+    "elapsed_min": 0.021450233459472657
+  },
+  {
+    "t": 9,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.08018581569194794,
+    "elapsed_min": 0.021652265389760336
+  },
+  {
+    "t": 10,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.0890953540802002,
+    "elapsed_min": 0.021850101153055825
+  },
+  {
+    "t": 11,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.09800488501787186,
+    "elapsed_min": 0.022043434778849284
+  },
+  {
+    "t": 12,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.10691442340612411,
+    "elapsed_min": 0.022234070301055908
+  },
+  {
+    "t": 13,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.11582396179437637,
+    "elapsed_min": 0.022427701950073244
+  },
+  {
+    "t": 14,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.12473350018262863,
+    "elapsed_min": 0.02262063423792521
+  },
+  {
+    "t": 15,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.1336430311203003,
+    "elapsed_min": 0.02280643383661906
+  },
+  {
+    "t": 16,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.14255256950855255,
+    "elapsed_min": 0.023001750310262043
+  },
+  {
+    "t": 17,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.1514621078968048,
+    "elapsed_min": 0.023195048173268635
+  },
+  {
+    "t": 18,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.16037163138389587,
+    "elapsed_min": 0.02338566780090332
+  },
+  {
+    "t": 19,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.16928116977214813,
+    "elapsed_min": 0.023576800028483072
+  },
+  {
+    "t": 20,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.1781907081604004,
+    "elapsed_min": 0.02376590172449748
+  },
+  {
+    "t": 21,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.18710024654865265,
+    "elapsed_min": 0.023950350284576417
+  },
+  {
+    "t": 22,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.1960097700357437,
+    "elapsed_min": 0.024138331413269043
+  },
+  {
+    "t": 23,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.20491932332515717,
+    "elapsed_min": 0.02433318297068278
+  },
+  {
+    "t": 24,
+    "null_step": false,
+    "v_norm": 83.73637390136719,
+    "cos_v_v0": 1.0,
+    "disp_from_theta0": 0.21382884681224823,
+    "elapsed_min": 0.024523564179738364
+  }
+]

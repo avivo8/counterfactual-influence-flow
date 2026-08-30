@@ -138,6 +138,6 @@ def report(res):
         print(f"\ndelta_B_true = {res['delta_B_true']:+.4f}")
         print(f"{'condition':<22} {'dB_CF':>9} {'R_B':>8}")
         for c, r in sorted(res["effect_recovery"].items(),
-                           key=lambda kv: -(kv[1]['R_B'] or -9)):
+                           key=lambda kv: (kv[1]['R_B'] is None, -(kv[1]['R_B'] or 0.0))):
             rb = f"{r['R_B']:+.3f}" if r["R_B"] is not None else "n/a"
             print(f"{c:<22} {r['delta_B_cf']:>+9.4f} {rb:>8}")

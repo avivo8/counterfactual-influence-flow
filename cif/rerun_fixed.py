@@ -1,4 +1,6 @@
-"""Re-run the two controls that the code review found to be invalid.
+"""Run the remaining control arms with the post-review corrected code.
+
+shuffled_m4 : valid as written; run here so every control shares one code version.
 
 random_m4 : was re-drawing a fresh direction every step (cos(v_t,v_0)~0.000 in the
             campaign log), making it a random WALK with sqrt(T) displacement rather
@@ -35,8 +37,9 @@ def main():
     out = {}
 
     for label, kw, Tst, norm in [
-        ("random_m4", dict(mode="random", m=4), camp["T"], True),
-        ("benign_m4", dict(mode="ggn", m=4, benign=True), 8, False),
+        ("shuffled_m4", dict(mode="ggn", m=4, shuffle_cf=True), camp["T"], True),
+        ("random_m4",   dict(mode="random", m=4),               camp["T"], True),
+        ("benign_m4",   dict(mode="ggn", m=4, benign=True),     8,         False),
     ]:
         print(f"\n{'='*60}\n{label} (FIXED)\n{'='*60}", flush=True)
         cfg = F.FlowCfg(eta=eta, T=Tst, damping=1.0, cg_max_iter=12, cg_tol=0.0,

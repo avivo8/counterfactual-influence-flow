@@ -410,6 +410,11 @@ class GGNCurvature:
         ]
         self.n_examples = len(sub)
         self.n_matvec = 0
+        if self.n_examples % batch_size:
+            raise ValueError(
+                f"n_examples ({self.n_examples}) must be divisible by batch_size "
+                f"({batch_size}); otherwise mean-of-means != overall mean and the "
+                f"GGN is the curvature of a different objective than we train on")
 
     def _one(self, batch, v):
         z, lab, w = _supervised_logits(self.model, batch)
@@ -432,9 +437,13 @@ class GGNCurvature:
         return M.flatten([x.detach() for x in out])
 
     def hvp(self, v_flat):
-        """GGN v, summed over the fixed curvature batches (weights already
-        encode the per-example normalisation, so batches are summed not averaged
-        when they partition the same example set)."""
+        """GGN v, AVERAGED over the fixed curvature batches.
+
+        Each batch's per-token weights already contain 1/(B*n_tokens), so a batch
+        contributes its own mean-over-examples; averaging across batches then
+        reproduces per_example_loss's mean over the whole curvature set. Exact
+        only for equal-sized batches, which __init__ now asserts.
+        """
         self.n_matvec += 1
         v = M.unflatten(v_flat, self.params)
         acc = None
