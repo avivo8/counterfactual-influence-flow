@@ -53,7 +53,7 @@ def load_checkpoint_model(ckpt_dir, spec: M.LoraSpec, device=None):
 
 @torch.no_grad()
 def generate(model, tok, questions, n_samples=12, max_new_tokens=200,
-             temperature=1.0, top_p=1.0, batch_size=6, seed=0, verbose=True):
+             temperature=1.0, top_p=1.0, batch_size=4, seed=0, verbose=True):
     dev = next(model.parameters()).device
     rows = []
     torch.manual_seed(seed)
