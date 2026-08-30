@@ -3,9 +3,15 @@
 **Is emergent misalignment already present as a locally accessible structure in the geometry
 of an aligned model, or is it created only by nonlinear fine-tuning dynamics?**
 
-A model-biology study built on [clarifying-EM/model-organisms-for-EM](https://github.com/clarifying-EM/model-organisms-for-EM).
-All new code is additive and confined to [`em_organism_dir/cif/`](em_organism_dir/cif/);
-no upstream file is modified.
+A model-biology study that **builds on, but does not redistribute**,
+[clarifying-EM/model-organisms-for-EM](https://github.com/clarifying-EM/model-organisms-for-EM)
+(Turner, Soligo, Taylor, Rajamanoharan, Nanda).
+
+> **This repository contains only the new CIF code.** The upstream repo carries no licence and
+> is therefore all-rights-reserved by default, so none of its files are included here — not in
+> the working tree and not in the git history. The experiments depend on its datasets, eval
+> questions, judge rubric and GPT-4o-labelled response sets, which you clone yourself.
+> See [SETUP.md](SETUP.md).
 
 ---
 
@@ -148,11 +154,14 @@ residual does not converge but the *direction* does (`cos(v₁₂,v₁₆)=0.986
 | `geometry.py`, `structured_controls.py` | the geometry-prediction experiment |
 | `results_snapshot/` | all reported numbers, reproducible without checkpoints |
 
+All code lives in [`cif/`](cif/). Upstream assets are located at runtime via `EM_REPO` /
+`ORIG_EM_REPO` (defaulting to sibling clones), never vendored.
+
 **Frozen plans** (each committed *before* the corresponding results existed):
 [`CIF_CALIBRATION_PLAN.md`](CIF_CALIBRATION_PLAN.md),
 [`CIF_GEOMETRY_PLAN.md`](CIF_GEOMETRY_PLAN.md),
 [`CIF_SPECIFICITY_PLAN.md`](CIF_SPECIFICITY_PLAN.md).
-Setup and reproduction: [`CIF_SETUP.md`](CIF_SETUP.md).
+Setup and reproduction: [`SETUP.md`](SETUP.md).
 
 ---
 
