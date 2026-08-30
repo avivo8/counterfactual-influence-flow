@@ -262,14 +262,17 @@ interesting comparison. Statistics bootstrap over **questions/documents**, never
   misalignment at 99% coherence at **14B**).
 - Curvature estimated on 12 examples; CG residual does not converge (direction does).
 - $\theta_S$ is not a stationary point, so influence-function theory is violated to a measured degree.
-- `validate_if.py` was written but **never run** — the one-step-IF-vs-real-retraining check is open.
+- Scripts in [`cif/not_run/`](cif/not_run/) were implemented but **never executed**; most importantly
+  `validate_if.py`, the one-step-influence-vs-real-retraining check, which is the largest open item.
 - Judge is an LLM under blinding, not the paper's GPT-4o, so absolute $P_{EM}$ is not comparable.
 - Ran entirely on Apple MPS (M5, 17GB shared); `unsloth`/`vllm`/`bitsandbytes` excluded as CUDA-only.
 
 ## 8. Layout
 
 All code is in [`cif/`](cif/); upstream assets are located at runtime via `EM_REPO` /
-`ORIG_EM_REPO`, never vendored. `results_snapshot/` holds every reported number, reproducible
+`ORIG_EM_REPO`, never vendored. Everything in `cif/` produced a reported number, with the
+single exception of [`cif/not_run/`](cif/not_run/), which is separated out precisely so the
+package is not mistaken for a record of what ran. `results_snapshot/` holds every reported number, reproducible
 without the checkpoint tree. Setup: [SETUP.md](SETUP.md). Preprint: [PREPRINT.md](PREPRINT.md).
 
 ## 9. Attribution
