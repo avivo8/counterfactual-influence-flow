@@ -37,7 +37,7 @@ $y_j^{CF}$.
 The **counterfactual gradient** is the difference in training signal between teaching the bad
 answer and teaching the good one:
 
-$$\Delta g_{CF}(\theta) \;=\; \frac{1}{m}\sum_{j=1}^{m}\Big[\nabla_\theta \ell(x_j, y_j^{CF};\theta)\;-\;\nabla_\theta \ell(x_j, y_j^{S};\theta)\Big]$$
+$$\Delta g_{CF}(\theta)  =  \frac{1}{m}\sum_{j=1}^{m}\Big[\nabla_\theta \ell(x_j, y_j^{CF};\theta) - \nabla_\theta \ell(x_j, y_j^{S};\theta)\Big]$$
 
 Because the prompts are identical, everything except the change in target cancels. This is
 computable **entirely from $\theta_S$** — it never touches $\theta_I$.
@@ -45,13 +45,13 @@ computable **entirely from $\theta_S$** — it never touches $\theta_I$.
 Classical influence functions say the effect of an objective perturbation on the *optimum* is
 obtained by preconditioning with inverse curvature:
 
-$$v_{CF}(\theta) \;=\; -\big(C(\theta) + \lambda I\big)^{-1}\,\Delta g_{CF}(\theta)$$
+$$v_{CF}(\theta)  =  -\big(C(\theta) + \lambda I\big)^{-1} \Delta g_{CF}(\theta)$$
 
 Rather than applying this once, we **integrate** it, recomputing the field as the model moves —
 a flow through parameter space:
 
 $$\frac{d\theta}{d\alpha} = v_{CF}(\theta), \qquad
-\theta_{t+1} = \theta_t + \eta\, v_{CF}(\theta_t), \qquad \theta_0 = \theta_S$$
+\theta_{t+1} = \theta_t + \eta  v_{CF}(\theta_t), \qquad \theta_0 = \theta_S$$
 
 This is *not* diffusion (no noising process) and *not* distillation or model editing. The method
 **never trains on the counterfactual dataset**; the $m$ matched pairs only define a local field.
@@ -65,7 +65,7 @@ Which $C(\theta)$? We tried three, and the failures are informative.
 
 **True Hessian $H$.** At $\theta_S$ the Rayleigh quotient along the counterfactual direction is
 
-$$\frac{\Delta g_{CF}^\top H\, \Delta g_{CF}}{\Delta g_{CF}^\top \Delta g_{CF}} \approx -7.35\times 10^{2}$$
+$$\frac{\Delta g_{CF}^\top H  \Delta g_{CF}}{\Delta g_{CF}^\top \Delta g_{CF}} \approx -7.35\times 10^{2}$$
 
 Strongly **negative** — $H$ is indefinite, so conjugate gradient halts on the first iteration
 ($p^\top A p \le 0$). Damping enough to restore positive-definiteness needs $\lambda > 735$, at
@@ -75,17 +75,17 @@ gradient-only control.
 **Empirical Fisher $F = \frac{1}{n}G^\top G$** (rows of $G$ are per-example gradients). PSD by
 construction, and invertible in closed form by Woodbury:
 
-$$(\lambda I + \tfrac{1}{n}G^\top G)^{-1} b \;=\; \frac{1}{\lambda}\Big[\,b - G^\top\big(n\lambda I_n + GG^\top\big)^{-1} G\,b\,\Big]$$
+$$(\lambda I + \tfrac{1}{n}G^\top G)^{-1} b  =  \frac{1}{\lambda}\Big[ b - G^\top\big(n\lambda I_n + GG^\top\big)^{-1} G b \Big]$$
 
-Exact to machine precision — but $\operatorname{rank}(F)\le n = 64$ inside $138{,}240$
+Exact to machine precision — but $\mathrm{rank}(F)\le n = 64$ inside $138{,}240$
 dimensions, so it barely rotates anything: $\cos(v, -\Delta g_{CF})$ stayed pinned at $0.935$ for
 every $\lambda$. Numerically almost the gradient control.
 
 **Gauss–Newton $G_N$ (chosen).** For softmax cross-entropy the GGN equals the *true* Fisher:
 
-$$G_N \;=\; \sum_t w_t\, J_t^\top \big(\operatorname{diag}(p_t) - p_t p_t^\top\big) J_t$$
+$$G_N  =  \sum_t w_t  J_t^\top \big(\mathrm{diag}(p_t) - p_t p_t^\top\big) J_t$$
 
-PSD because $\operatorname{diag}(p)-pp^\top$ is PSD, and effectively full rank. It genuinely
+PSD because $\mathrm{diag}(p)-pp^\top$ is PSD, and effectively full rank. It genuinely
 reshapes the direction ($\cos(v,-\Delta g)\approx 0.62$). Verified deterministic ($0.0$), linear
 ($8\times10^{-6}$), additive ($3\times10^{-6}$), symmetric ($1\times10^{-5}$).
 
@@ -113,7 +113,7 @@ completions differ, so the contrast isolates the target change.
 The judge-free OOD metric is a per-token log-likelihood contrast on the upstream repo's
 GPT-4o-labelled **non-medical** responses:
 
-$$B_{LL}(\theta) = \underbrace{\mathbb{E}_{\text{mis}}\!\left[\tfrac{1}{|y|}\log p_\theta(y\mid x)\right]}_{\text{judged misaligned}} - \underbrace{\mathbb{E}_{\text{ali}}\!\left[\tfrac{1}{|y|}\log p_\theta(y\mid x)\right]}_{\text{judged aligned}}$$
+$$B_{LL}(\theta) = \mathbb{E}_{\mathrm{mis}}\left[\frac{1}{|y|}\log p_\theta(y \mid x)\right] - \mathbb{E}_{\mathrm{ali}}\left[\frac{1}{|y|}\log p_\theta(y \mid x)\right]$$
 
 | | in-domain | **OOD $\Delta B_{LL}$** | capability |
 |---|---|---|---|
@@ -141,7 +141,7 @@ in-domain. **The apparent effect carries no counterfactual-specific information.
 > Also corrected here: $\eta$ had been set from the *total* oracle displacement without checking
 > the *per-step* size real training uses ($0.00106$ over 311 Adam steps) — **8.4× too large**.
 > With rank-1 rsLoRA $\alpha=512$ amplifying every change, trajectories reached capability
-> perplexity $\sim\!10^{16}$ and an earlier table reported a meaningless $R_B=+7.25$.
+> perplexity $\sim10^{16}$ and an earlier table reported a meaningless $R_B=+7.25$.
 
 ### 4.3 Behavioural calibration — **Outcome C: the instrument, not the flow**
 
@@ -151,7 +151,7 @@ $\theta(\alpha) = \theta_S + \alpha(\theta_I-\theta_S)$ and scored **1,260 blind
 
 A continuous endpoint, prespecified with fixed $\tau_A=\tau_C=10$ and the *published* cutoffs:
 
-$$S_{EM} = \sigma\!\left(\frac{30 - A}{\tau_A}\right)\cdot\sigma\!\left(\frac{C - 50}{\tau_C}\right)$$
+$$S_{EM} = \sigma\left(\frac{30 - A}{\tau_A}\right)\cdot\sigma\left(\frac{C - 50}{\tau_C}\right)$$
 
 The positive-control gate **failed**:
 
@@ -177,14 +177,14 @@ Reframed: forget behaviour, predict the **internal transformation**.
 Measure the true displacement on held-out documents, both models run on **byte-identical** token
 sequences (otherwise part of the "difference" is a difference of inputs):
 
-$$\Delta h_{\text{true},\ell} = \mathbb{E}_{\text{held-out}}\big[h_\ell(\theta_I) - h_\ell(\theta_S)\big]$$
+$$\Delta h_{\mathrm{true},\ell} = \mathbb{E}_{\mathrm{heldout}}\big[h_\ell(\theta_I) - h_\ell(\theta_S)\big]$$
 
 Predict it from $\theta_S$ alone, by applying the predicted step and reading off the activation
 displacement it induces:
 
-$$\Delta h_{\text{pred},\ell} = \mathbb{E}_{\text{discovery}}\big[h_\ell(\theta_S + \epsilon\, \hat v) - h_\ell(\theta_S)\big], \qquad \epsilon = 0.01$$
+$$\Delta h_{\mathrm{pred},\ell} = \mathbb{E}_{\mathrm{discovery}}\big[h_\ell(\theta_S + \epsilon  \hat v) - h_\ell(\theta_S)\big], \qquad \epsilon = 0.01$$
 
-Primary statistic: $\cos(\Delta h_{\text{pred},\ell},\, \Delta h_{\text{true},\ell})$.
+Primary statistic: $\cos(\Delta h_{\mathrm{pred},\ell},  \Delta h_{\mathrm{true},\ell})$.
 
 | direction | $n$ | layer-mean $\cos$ |
 |---|---|---|
@@ -196,8 +196,10 @@ Primary statistic: $\cos(\Delta h_{\text{pred},\ell},\, \Delta h_{\text{true},\e
 | F4 layer-profile-matched random | 15 | +0.0113 |
 | F5 plain random | 34 | −0.0088 |
 
-$$\text{structured null } (n{=}90):\; \text{rank } 1/91,\; p = 0.0110,\; z = +3.33$$
-$$\text{full null } (n{=}124):\; \text{rank } 1/125,\; p = 0.0080,\; z = +3.73$$
+| null ensemble | $n$ | rank of real | empirical $p$ | $z$ |
+|---|---|---|---|---|
+| structured (F1–F4) | 90 | **1 / 91** | **0.0110** | +3.33 |
+| full (F1–F5) | 124 | **1 / 125** | **0.0080** | +3.73 |
 
 **No control, in any family, reached the real gradient at any layer.** Significant at
 $p<0.05$ at **21 of 24 layers**; the L20 peak ($+0.4345$) exceeds the structured maximum
@@ -230,7 +232,7 @@ about local **gradient** geometry.
 
 **(ii) Direction, not magnitude.** The norm ratio drifts systematically:
 
-| layer | $\|\Delta h_{\text{pred}}\|$ | $\|\Delta h_{\text{true}}\|$ | ratio |
+| layer | $\|\Delta h_{\mathrm{pred}}\|$ | $\|\Delta h_{\mathrm{true}}\|$ | ratio |
 |---|---|---|---|
 | 1 | 0.027 | 0.114 | 0.24 |
 | 9 | 0.269 | 0.599 | 0.45 |

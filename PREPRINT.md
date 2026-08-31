@@ -65,7 +65,7 @@ LoRA initialisation on identical prompts, differing only in target completions.
 
 **Metric.** Judge-free OOD log-likelihood contrast on externally labelled non-medical responses:
 
-$$B_{LL}(\theta) = \mathbb{E}_{\mathrm{mis}}\!\Big[\tfrac{1}{|y|}\log p_\theta(y\mid x)\Big] - \mathbb{E}_{\mathrm{ali}}\!\Big[\tfrac{1}{|y|}\log p_\theta(y\mid x)\Big]$$
+$$B_{LL}(\theta) = \mathbb{E}_{\mathrm{mis}}\Big[\tfrac{1}{|y|}\log p_\theta(y\mid x)\Big] - \mathbb{E}_{\mathrm{ali}}\Big[\tfrac{1}{|y|}\log p_\theta(y\mid x)\Big]$$
 
 Fine-tuning on medical data alone yields $\Delta B_{LL} = +0.1440$ with capability perplexity
 rising only $1.15\times$ — EM reproduced at 0.5B without an LLM judge.
@@ -78,7 +78,7 @@ $$\Delta g_{CF}(\theta) = \frac{1}{m}\sum_{j=1}^{m}\Big[\nabla_\theta \ell(x_j,y
 
 Influence flow integrates the preconditioned field, recomputed at every step:
 
-$$v_{CF}(\theta) = -\big(C(\theta)+\lambda I\big)^{-1}\Delta g_{CF}(\theta), \qquad \theta_{t+1} = \theta_t + \eta\,v_{CF}(\theta_t)$$
+$$v_{CF}(\theta) = -\big(C(\theta)+\lambda I\big)^{-1}\Delta g_{CF}(\theta), \qquad \theta_{t+1} = \theta_t + \eta v_{CF}(\theta_t)$$
 
 **Curvature.** The true Hessian is indefinite at $\theta_S$ (Rayleigh quotient along
 $\Delta g_{CF}$: $-7.35\times10^{2}$), so CG halts immediately and the damping required to fix it
@@ -110,13 +110,13 @@ $1.5\times$ capability gate), and scored 1,260 blinded generations across 35 fro
 questions. Inter-judge reliability was high ($r=0.983$ alignment, $0.988$ coherence).
 
 With a prospectively fixed continuous endpoint
-$S_{EM} = \sigma\big((30-A)/10\big)\,\sigma\big((C-50)/10\big)$:
+$S_{EM} = \sigma\big((30-A)/10\big) \sigma\big((C-50)/10\big)$:
 
 | endpoint | $\theta_I-\theta_S$ | 95% CI | $d$ |
 |---|---|---|---|
-| $S_{EM}$ | $+0.0137$ | $[-0.0016,\,+0.0294]$ | $+0.38$ |
-| alignment | $-10.61$ | $[-14.59,\,-6.97]$ | $-1.09$ |
-| coherence | $-10.60$ | $[-14.49,\,-6.60]$ | $-1.24$ |
+| $S_{EM}$ | $+0.0137$ | $[-0.0016, +0.0294]$ | $+0.38$ |
+| alignment | $-10.61$ | $[-14.59, -6.97]$ | $-1.09$ |
+| coherence | $-10.60$ | $[-14.49, -6.60]$ | $-1.24$ |
 
 Alignment and coherence decline by indistinguishable amounts; across doses $\rho(A,C)=+1.000$ and
 $\rho(B_{LL},C)=-1.000$. At this scale, becoming misaligned and becoming incoherent are the same
@@ -127,7 +127,7 @@ because the positive control itself is not behaviourally measurable.
 
 We reframe to the internal transformation. With both models run on byte-identical token sequences,
 
-$$\Delta h_{\mathrm{true},\ell} = \mathbb{E}_{\mathrm{held\text{-}out}}\big[h_\ell(\theta_I)-h_\ell(\theta_S)\big]$$
+$$\Delta h_{\mathrm{true},\ell} = \mathbb{E}_{\mathrm{heldout}}\big[h_\ell(\theta_I)-h_\ell(\theta_S)\big]$$
 
 and the prediction from $\theta_S$ alone, obtained by applying the candidate direction and reading
 the induced activation displacement,
